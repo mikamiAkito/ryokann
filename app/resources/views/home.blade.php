@@ -14,8 +14,9 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    新規会員登録完了
                 </div>
+                <a class="navbar-brand" href="{{ url('/') }}">topへ</a>
             </div>
         </div>
     </div>

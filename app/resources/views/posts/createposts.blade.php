@@ -12,27 +12,30 @@
     </head>
     <body>
         <h1 class="text-center">投稿入力画面</h1>
-        <form action="{{ route('create.posts') }}" method="post">
+        <a href="/posts/calender" class="btn btn-primary">予約可能日確認</a>
+        <form action="/posts" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3 text-center">
                 <label for="exampleFormControlInput1" class="form-label">タイトル</label>
-                <input type="text" class="form-control ml-auto mr-auto" id="exampleFormControlInput1">
+                <input type="text" class="form-control ml-auto mr-auto" id="exampleFormControlInput7" name="title">
             </div>
             <div class="mb-3 text-center">
-                <label for="exampleFormControlInput1" class="form-label">予約可能人数or可能日</label>
-                <input type="text" class="form-control ml-auto mr-auto" id="exampleFormControlInput1">
+                <label for="exampleFormControlInput1" class="form-label">予約可能日</label>
+                <input type="date" class="form-control ml-auto mr-auto" id="exampleFormControlInput6" name="date">
             </div>
             <div class="mb-3 text-center">
                 <label for="exampleFormControlTextarea1" class="form-label">内容</label>
-                <textarea class="form-control ml-auto mr-auto" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea class="form-control ml-auto mr-auto" id="exampleFormControlTextarea5" rows="3" name="explanation"></textarea>
             </div>
             <div class="mb-3 text-center">
                 <label for="exampleFormControlInput1" class="form-label">画像</label>
-                <input type="file" class="form-control ml-auto mr-auto" id="exampleFormControlInput1">
+                <input type="file" class="form-control ml-auto mr-auto" id="exampleFormControlInput1" name="image">
+                <input type="file" class="form-control ml-auto mr-auto" id="exampleFormControlInput2" name="image2">
+                <input type="file" class="form-control ml-auto mr-auto" id="exampleFormControlInput3" name="image3">
             </div>
             <div class="mb-3 text-center">
                 <label for="exampleFormControlInput1" class="form-label">金額</label>
-                <input type="number" class="form-control ml-auto mr-auto" id="exampleFormControlInput1">
+                <input type="text" class="form-control ml-auto mr-auto" id="exampleFormControlInput4" name="amount">
             </div>
             <div class="mb-3 text-center">
                 <input type="submit" value="投稿" class="ml-auto mr-auto btn btn-primary btn-lg"/>

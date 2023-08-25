@@ -8,10 +8,9 @@
                 <div class="card-header">{{ __('新規会員登録') }}</div>
 
                 <div class="card-body">
-                    <a class="btn btn-primary" href="{{ route('register.ryokan') }}" role="button">Link</a>
                     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                         @csrf
-                        <input id='role' type='hidden' class='form-control' name='role' value='0'/>
+                        <input id='role' type='hidden' class='form-control' name='role' value='1'/>
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('名前') }}</label>
 
@@ -27,11 +26,11 @@
                         </div>
 
                         <!-- <div class="form-group row">
-                            <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('プロフィール画像 (サイズは1024Kbyteまで）') }}</label>
+                            <label for="avatar" class="col-md-4 col-form-label text-md-right">{{ __('プロフィール画像 (サイズは1024Kbyteまで）') }}</label>
  
                             <div class="col-md-6">
-                                <input id="image" type="file" name="image" class="@error('image') is-invalid @enderror">
-                                @error('image')
+                                <input id="avatar" type="file" name="avatar" class="@error('avatar') is-invalid @enderror">
+                                @error('avatar')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

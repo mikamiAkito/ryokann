@@ -1,8 +1,13 @@
 <?php
 
-use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\PostsController;
 
 use App\Http\Controllers\RegistrationController;
+
+use App\Http\Controllers\RyokanregisterController;
+
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +20,16 @@ use App\Http\Controllers\RegistrationController;
 |
 */
 
-// Route::get('/', [DisplayController::class, 'index']);
+Route::get('/', [PostsController::class, 'index'])->name('create.posts');
+Route::get('/registerryokan', [RyokanregisterController::class, 'index'])->name('register.ryokan');
 
-Route::get('/', [RegistrationController::class, 'createPostsForm'])->name('create.posts');
-Route::post('/', [RegistrationController::class, 'createPosts']);
+Route::get('/users/{id}/', [UserController::class, 'index'])->name('users.detail');
+
+Route::resource('posts', 'PostsController');
+
+Route::resource('users', 'UserController');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
