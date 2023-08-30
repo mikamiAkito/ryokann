@@ -32,13 +32,8 @@ Route::resource('posts', 'PostsController');
 Route::resource('users', 'UserController');
 Route::resource('bookings', 'BookingsController');
 
-// Route::get('reservation', 'ReservationController@create'); // 入力フォーム
-// Route::post('reservation', 'ReservationController@store'); // 送信先
-
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/likes', 'PostsController@like')->name('posts.like');

@@ -24,9 +24,10 @@ class BookingsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('bookings.create');
+        $posts = $request['post_id'];
+        return view('bookings.create')->with(['posts' => $posts]);
     }
 
     /**
@@ -35,14 +36,11 @@ class BookingsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookingsRequest $request)
     {
-        $posts = new Posts;
-        $posts = Posts::first(['id']);
-        $posts->save();
-
+        
         \App\Bookings::create([
-            'post_id' => $posts,
+            'post_id' => $request->post_id,
             'number_people' => $request->number_people,
             'user_id' => $request->user()->id,
             'date_strat' => $request->date_strat,

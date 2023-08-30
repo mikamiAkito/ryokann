@@ -5,7 +5,24 @@
 @if( Auth::check() )
     @if(auth()->user()->role == '1')
         <a href="/posts/create" class="btn btn-primary">新規投稿</a>
+    @else
+        @if(!$posts->isLikedBy(Auth::user()))
+            <span class="likes">
+                <i class="fas fa-music like-toggle" data-post-id="{{ $posts->id }}"></i>
+            <span class="like-counter">{{$posts->likes_count}}</span>
+            </span><!-- /.likes -->
+        @else
+            <span class="likes">
+                <i class="fas fa-music heart like-toggle liked" data-post-id="{{ $posts->id }}"></i>
+            <span class="like-counter">{{$posts->likes_count}}</span>
+            </span><!-- /.likes -->
+        @endif
     @endif
+@else
+    <span class="likes">
+        <i class="fas fa-music heart"></i>
+        <span class="like-counter">{{$item->likes_count}}</span>
+    </span><!-- /.likes -->
 @endif
 @if(count($posts) > 0)
     @foreach($posts as $post)

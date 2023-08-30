@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Likes;
 
 class Posts extends Model
 {
@@ -11,5 +12,14 @@ class Posts extends Model
 
     public function User() {
         return $this->belongsTo('App\User', 'user_id', 'id');
+    }
+
+    public function likes()
+    {
+        return $this->hasMany('App\Likes');
+    }
+
+    public function isLikedBy($user): bool {
+        return Likes::where('user_id', $user->id)->where('post_id', $this->id)->first() !==null;
     }
 }

@@ -23,6 +23,7 @@
             <label for="exampleInputPassword1">予約終了日</label>
             <input type="date" class="form-control" id="exampleInputPassword1" name="date_end">
         </div>
+        <input type="hidden" name="post_id" value="{{ $posts }}">
         <button type="submit" class="btn btn-primary">Submit</button>
         <!-- エラー表示 -->
         @if($errors->any())

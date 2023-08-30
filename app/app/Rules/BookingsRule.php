@@ -17,8 +17,8 @@ class BookingsRule implements Rule
      */
     public function __construct($date_strat, $date_end)
     {
-        $this->_date_strat = $start_at;
-        $this->_date_end = $end_at;
+        $this->_date_strat = $date_strat;
+        $this->_date_end = $date_end;
     }
 
     /**
