@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\PostsController;
-use App\User;
+use App\Http\Requests\BookingsRequest;
+use App\Bookings;
+use App\Posts;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class BookingsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.detail');
+        
     }
 
     /**
@@ -25,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('bookings.create');
     }
 
     /**
@@ -36,16 +37,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $posts = new Posts;
+        $posts = Posts::first(['id']);
+        $posts->save();
+
+        \App\Bookings::create([
+            'post_id' => $posts,
+            'number_people' => $request->number_people,
+            'user_id' => $request->user()->id,
+            'date_strat' => $request->date_strat,
+            'date_end' => $request->date_end,
+        ]);
+
+
+        return back()->with('result', '予約が完了しました。');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Bookings  $bookings
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Bookings $bookings)
     {
         //
     }
@@ -53,43 +67,39 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Bookings  $bookings
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Bookings $bookings)
     {
-        $user = User::find($id);
-        return view('users.edit')->with(['users' => $user]);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Bookings  $bookings
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Bookings $bookings)
     {
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->save();
-
-        return view('users.detail');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Bookings  $bookings
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Bookings $bookings)
     {
-        $user = User::find($id);
-        $user->delete();
-        return redirect(route('posts.index'))->with('success', '削除しました');
+        //
     }
 
+    public function fullcalendar() 
+    {
+        //
+    }
 }

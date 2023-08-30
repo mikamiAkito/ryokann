@@ -8,6 +8,8 @@ use App\Http\Controllers\RyokanregisterController;
 
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\BookingsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,15 +23,22 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', [PostsController::class, 'index'])->name('create.posts');
+
 Route::get('/registerryokan', [RyokanregisterController::class, 'index'])->name('register.ryokan');
 
 Route::get('/users/{id}/', [UserController::class, 'index'])->name('users.detail');
 
 Route::resource('posts', 'PostsController');
-
 Route::resource('users', 'UserController');
+Route::resource('bookings', 'BookingsController');
+
+// Route::get('reservation', 'ReservationController@create'); // 入力フォーム
+// Route::post('reservation', 'ReservationController@store'); // 送信先
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

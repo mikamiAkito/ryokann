@@ -45,6 +45,10 @@
                     </form>
                     
                 @endif
+                @if(auth()->user()->role == '0')
+                <a href="{{ route('bookings.create') }}">予約</a>
+                <a href="{{ route('bookings.index') }}">いいね</a>
+                @endif
             @endif
         </div>
     </div>
