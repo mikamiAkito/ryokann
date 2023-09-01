@@ -13,7 +13,11 @@
                 <small>アカウントタイプ:旅館運営ユーザー</small>
             @endif
             <a class="btn btn-primary" href="{{ route('users.edit', Auth::user()->id ) }}" role="button">編集</a>
+            @if(Auth::user()->role == '0')
+            <a class="btn btn-primary" href="{{ route('likes.index', Auth::user()->id ) }}" role="button">いいね一覧</a>
 
+            <a class="btn btn-primary" href="{{ route('bookings.index', Auth::user()->id ) }}" role="button">予約一覧</a>
+            @endif
             <form action="{{ route('users.destroy', Auth::user()->id) }}" method="post" class="float-right">
                 @csrf
                 @method('delete')

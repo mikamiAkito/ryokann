@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Likes;
 use App\Posts;
+use App\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -16,11 +16,18 @@ class PostsController extends Controller
      */
     public function index()
     {
+
+        $data = [];
+        $posts = new Posts;
         $posts = Posts::withCount('likes')->orderBy('created_at', 'desc')->paginate(10);
-        $param = [
-            'posts' => $posts,
-        ];
-        return view('posts.list', $param);
+        $like_model = new Like;
+
+        $data = [
+                'posts' => $posts,
+                'like_model'=>$like_model,
+            ];
+
+        return view('posts.list', $data);
     }
 
     /**
@@ -116,26 +123,27 @@ class PostsController extends Controller
         return redirect(route('posts.index'))->with('success', '削除しました');
     }
 
-    public function like(Request $request)
+    public function ajaxlike(Request $request)
     {
-        $user_id = Auth::user()->id; 
-        $post_id = $request->post_id; 
-        $already_liked = Likes::where('user_id', $user_id)->where('post_id', $post_id)->first(); //3.
-    
-        if (!$already_liked) { 
-            $like = new Likes; 
-            $like->post_id = $post_id; 
-            $like->user_id = $user_id;
-            $like->save();
+        $id = Auth::user()->id;
+        $posts_id = $request->posts_id;
+        $like = new Like;
+        $posts = Posts::findOrFail($posts_id);
+
+        if ($like->like_exist($id, $posts_id)) {
+            $like = Like::where('posts_id', $posts_id)->where('user_id', $id)->delete();
         } else {
-            Likes::where('post_id', $post_id)->where('user_id', $user_id)->delete();
+            $like = new Like;
+            $like->posts_id = $request->posts_id;
+            $like->user_id = Auth::user()->id;
+            $like->save();
         }
 
-        $post_likes_count = Posts::withCount('likes')->findOrFail($post_id)->likes_count;
-        $param = [
-            'post_likes_count' => $post_likes_count,
+        $postsLikesCount = $posts->loadCount('likes')->likes_count;
+
+        $json = [
+            'postsLikesCount' => $postsLikesCount,
         ];
-        return response()->json($param); 
+        return response()->json($json);
     }
-    
 }

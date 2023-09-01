@@ -17,7 +17,6 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->unique();
-            $table->integer('post_id')->unique();//いらないかも？
             $table->string('title', '30');
             $table->date('date');
             $table->string('image', '200')->nullable();

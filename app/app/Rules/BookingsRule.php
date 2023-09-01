@@ -7,7 +7,8 @@ use Illuminate\Contracts\Validation\Rule;
 class BookingsRule implements Rule
 {
 
-    private  $_date_strat,
+    private $_post_id,  
+    $_date_strat,
     $_date_end;
 
     /**
@@ -15,8 +16,9 @@ class BookingsRule implements Rule
      *
      * @return void
      */
-    public function __construct($date_strat, $date_end)
+    public function __construct($post_id, $date_strat, $date_end)
     {
+        $this->_post_id = $post_id;
         $this->_date_strat = $date_strat;
         $this->_date_end = $date_end;
     }
@@ -30,7 +32,8 @@ class BookingsRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return \App\Bookings::whereHasBookings($this->_date_strat, $this->_date_end)
+        return \App\Bookings::where('post_id', $this->_post_id)
+        ->whereHasBookings($this->_date_strat, $this->_date_end)
         ->doesntExist();
     }
 

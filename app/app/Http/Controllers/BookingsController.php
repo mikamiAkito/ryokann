@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BookingsRequest;
 use App\Bookings;
 use App\Posts;
+use App\User;
 use Illuminate\Http\Request;
 
 class BookingsController extends Controller
@@ -14,9 +18,27 @@ class BookingsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
+        $bookings = new Bookings;
+        $user = new User;
+        $user_id = Auth::user()->id;
+
+        $bookingall = $bookings->where('user_id', $user_id)->get();
+        //dd($bookingall);
+
+        $list = DB::table('posts')
+        ->select('posts.image', 'posts.image2', 'posts.image3', 'posts.title', 'posts.amount', 'posts.explanation', 'posts.date', 'bookings.user_id','bookings.post_id', 'bookings.number_people', 'bookings.date_strat', 'bookings.date_end', 'bookings.id')
+        ->join('bookings', 'posts.id', '=', 'bookings.post_id')
+        ->get();
+
+        $bookingsindexlist = $list->where('user_id', $user_id);
+        // dd($bookingsindexlist);
+
+
+        return view('bookings.list', [
+            'bookings' => $bookingsindexlist,
+        ]);
     }
 
     /**
@@ -37,7 +59,7 @@ class BookingsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(BookingsRequest $request)
-    {
+    {//予約システム
         
         \App\Bookings::create([
             'post_id' => $request->post_id,
@@ -68,9 +90,10 @@ class BookingsController extends Controller
      * @param  \App\Bookings  $bookings
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bookings $bookings)
+    public function edit($id)
     {
-        //
+        $bookings = Bookings::find($id);
+        return view('bookings.edit')->with(['bookings' => $bookings]);
     }
 
     /**
@@ -80,9 +103,15 @@ class BookingsController extends Controller
      * @param  \App\Bookings  $bookings
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bookings $bookings)
+    public function update(Request $request, $id)
     {
-        //
+        $bookings = Bookings::find($id);
+        $bookings->number_people = $request->number_people;
+        $bookings->date_strat = $request->date_strat;
+        $bookings->date_end = $request->date_end;
+        $bookings->save();
+
+        return view('users.detail');
     }
 
     /**
@@ -91,13 +120,10 @@ class BookingsController extends Controller
      * @param  \App\Bookings  $bookings
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bookings $bookings)
+    public function destroy(Bookings $bookings, $id)
     {
-        //
-    }
-
-    public function fullcalendar() 
-    {
-        //
+        $bookings = Bookings::find($id);
+        $bookings->delete();
+        return redirect(route('bookings.index'))->with('success', '削除しました');
     }
 }

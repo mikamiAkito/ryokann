@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\PostsController;
 use App\User;
+use App\Bookings;
 use Illuminate\Http\Request;
 
 class UserController extends Controller

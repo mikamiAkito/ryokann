@@ -10,6 +10,8 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\BookingsController;
 
+use App\Http\Controllers\LikeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,7 @@ use App\Http\Controllers\BookingsController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', [PostsController::class, 'index'])->name('create.posts');
 
@@ -32,8 +35,12 @@ Route::resource('posts', 'PostsController');
 Route::resource('users', 'UserController');
 Route::resource('bookings', 'BookingsController');
 
-Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/likes', 'PostsController@like')->name('posts.like');
+Route::get('likes', [LikeController::class, 'index'])->name('likes.index');
+
+//ログイン中のユーザーのみアクセス可能
+Route::group(['middleware' => ['auth']], function () {
+    //「ajaxlike.jsファイルのurl:'ルーティング'」に書くものと合わせる。
+    Route::post('ajaxlike', 'PostsController@ajaxlike')->name('posts.ajaxlike');
+});

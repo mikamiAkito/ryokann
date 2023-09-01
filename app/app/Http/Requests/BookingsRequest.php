@@ -27,6 +27,7 @@ class BookingsRequest extends FormRequest
         return [
             'date_strat' => [
                 new BookingsRule(
+                    $this->post_id,
                     $this->date_strat,
                     $this->date_end,
                 )

@@ -16,9 +16,9 @@ class CreateBookingsTable extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('post_id');
+            $table->unsignedBigInteger('posts_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->unique();
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade')->unique();
+            $table->foreign('posts_id')->references('id')->on('posts')->onDelete('cascade')->unique();
             $table->integer('number_people');
             $table->date('date_strat');
             $table->date('date_end');

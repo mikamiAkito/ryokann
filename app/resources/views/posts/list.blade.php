@@ -5,24 +5,7 @@
 @if( Auth::check() )
     @if(auth()->user()->role == '1')
         <a href="/posts/create" class="btn btn-primary">新規投稿</a>
-    @else
-        @if(!$posts->isLikedBy(Auth::user()))
-            <span class="likes">
-                <i class="fas fa-music like-toggle" data-post-id="{{ $posts->id }}"></i>
-            <span class="like-counter">{{$posts->likes_count}}</span>
-            </span><!-- /.likes -->
-        @else
-            <span class="likes">
-                <i class="fas fa-music heart like-toggle liked" data-post-id="{{ $posts->id }}"></i>
-            <span class="like-counter">{{$posts->likes_count}}</span>
-            </span><!-- /.likes -->
-        @endif
     @endif
-@else
-    <span class="likes">
-        <i class="fas fa-music heart"></i>
-        <span class="like-counter">{{$item->likes_count}}</span>
-    </span><!-- /.likes -->
 @endif
 @if(count($posts) > 0)
     @foreach($posts as $post)
@@ -61,8 +44,72 @@
                     </div>
                 @endif
             </div>
+            @if( Auth::check() )
+                @if(auth()->user()->role == '0')
+                    @if($like_model->like_exist(Auth::user()->id,$post->id))
+                        <p class="favorite-marke">
+                            <a class="js-like-toggle loved" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
+                            <span class="likesCount">{{$post->likes_count}}</span>
+                        </p>
+                    @else
+                        <p class="favorite-marke">
+                            <a class="js-like-toggle" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
+                            <span class="likesCount">{{$post->likes_count}}</span>
+                        </p>
+                    @endif
+                @endif
+            @else
+                <p class="favorite-marke">
+                    <span class="likesCount">{{$post->likes_count}}</span>
+                </p>
+            @endif
         </div>
     @endforeach
 @endif
 
 @endsection
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        console.log("a");//接続確認（開発者ツールコンソール）
+    var like = $('.js-like-toggle');
+    var likePostId;
+    
+    like.on('click', function () {
+        var $this = $(this);
+        likePostId = $this.data('postid');
+        $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/ajaxlike',  //routeの記述
+                type: 'POST', //受け取り方法の記述（GETもある）
+                data: {
+                    'posts_id': likePostId //コントローラーに渡すパラメーター
+                },
+        })
+    
+            // Ajaxリクエストが成功した場合
+            .done(function (data) {
+    //lovedクラスを追加
+                $this.toggleClass('loved'); 
+    
+    //.likesCountの次の要素のhtmlを「data.postLikesCount」の値に書き換える
+                $this.next('.likesCount').html(data.postsLikesCount); 
+    
+            })
+            // Ajaxリクエストが失敗した場合
+            .fail(function (data, xhr, err) {
+    //ここの処理はエラーが出た時にエラー内容をわかるようにしておく。
+    //とりあえず下記のように記述しておけばエラー内容が詳しくわかります。笑
+                console.log('エラー');
+                console.log(err);
+                console.log(xhr);
+            });
+        
+        return false;
+    });
+    });
+</script>

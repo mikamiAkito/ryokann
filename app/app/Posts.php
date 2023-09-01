@@ -16,10 +16,6 @@ class Posts extends Model
 
     public function likes()
     {
-        return $this->hasMany('App\Likes');
-    }
-
-    public function isLikedBy($user): bool {
-        return Likes::where('user_id', $user->id)->where('post_id', $this->id)->first() !==null;
+        return $this->hasMany('App\Like');
     }
 }
