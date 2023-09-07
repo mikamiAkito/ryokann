@@ -7,66 +7,137 @@
         <a href="/posts/create" class="btn btn-primary">新規投稿</a>
     @endif
 @endif
-@if(count($posts) > 0)
-    @foreach($posts as $post)
-        <div class="card my-3">
-            <a href="/posts/{{$post->id}}">詳細へ</a>
-            <div class="card-body">
-                <h5 class="card-title">{{$post->title}}</h5>
-                <small>投稿日:{{($post->created_at)->format('Y/m/d')}}</small><br/>
-                <small>更新日:{{($post->updated_at)->format('Y/m/d')}}</small><br/>
-                <small>内容:{{($post->explanation)}}</small><br/>
-                <small>金額:{{($post->amount)}}円</small>
-                <p class="card-text">{{$post->date}}</p>
-                @if($post->image == null)
-                    <img src="/storage/noimage.png">
-                @else
-                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img class="d-block w-100" src="/storage/{{$post->image}}" alt="First slide">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="d-block w-100" src="/storage/{{$post->image2}}" alt="Second slide">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="d-block w-100" src="/storage/{{$post->image3}}" alt="Third slide">
-                            </div>
+@auth
+    @if(auth()->user()->role != '2')
+        @if(count($posts) > 0)
+            @foreach($posts as $post)
+                @if($post->del_flg == '0')
+                    <div class="card my-3">
+                        <a href="/posts/{{$post->id}}">詳細へ</a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{$post->title}}</h5>
+                            <small>投稿日:{{($post->created_at)->format('Y/m/d')}}</small><br/>
+                            <small>更新日:{{($post->updated_at)->format('Y/m/d')}}</small><br/>
+                            <small>内容:{{($post->explanation)}}</small><br/>
+                            <small>金額:{{($post->amount)}}円</small>
+                            <p class="card-text">{{$post->date}}</p>
+                            @if($post->image == null)
+                                <img src="/storage/noimage.png">
+                            @else
+                                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img class="d-block w-100" src="/storage/{{$post->image}}" alt="First slide">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img class="d-block w-100" src="/storage/{{$post->image2}}" alt="Second slide">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img class="d-block w-100" src="/storage/{{$post->image3}}" alt="Third slide">
+                                        </div>
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                            @endif
                         </div>
-                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
+                        @if( Auth::check() )
+                            @if(auth()->user()->role == '0')
+                                @if($like_model->like_exist(Auth::user()->id,$post->id))
+                                    <p class="favorite-marke">
+                                        <a class="js-like-toggle loved" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
+                                        <span class="likesCount">{{$post->likes_count}}</span>
+                                    </p>
+                                @else
+                                    <p class="favorite-marke">
+                                        <a class="js-like-toggle" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
+                                        <span class="likesCount">{{$post->likes_count}}</span>
+                                    </p>
+                                @endif
+                            @endif
+                        @else
+                            <p class="favorite-marke">
+                                <span class="likesCount">{{$post->likes_count}}</span>
+                            </p>
+                        @endif
                     </div>
                 @endif
-            </div>
-            @if( Auth::check() )
-                @if(auth()->user()->role == '0')
-                    @if($like_model->like_exist(Auth::user()->id,$post->id))
-                        <p class="favorite-marke">
-                            <a class="js-like-toggle loved" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
-                            <span class="likesCount">{{$post->likes_count}}</span>
-                        </p>
+            @endforeach
+        @endif
+    @else
+        <a href="{{ route('admin.users') }}">ユーザーリスト</a></br>
+        <a href="{{ route('admin.posts') }}">投稿リスト</a>
+    @endif
+@endauth
+@guest
+    @if(count($posts) > 0)
+        @foreach($posts as $post)
+            @if($post->del_flg == '0')
+                <div class="card my-3">
+                    <a href="/posts/{{$post->id}}">詳細へ</a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{$post->title}}</h5>
+                        <small>投稿日:{{($post->created_at)->format('Y/m/d')}}</small><br/>
+                        <small>更新日:{{($post->updated_at)->format('Y/m/d')}}</small><br/>
+                        <small>内容:{{($post->explanation)}}</small><br/>
+                        <small>金額:{{($post->amount)}}円</small>
+                        <p class="card-text">{{$post->date}}</p>
+                        @if($post->image == null)
+                            <img src="/storage/noimage.png">
+                        @else
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-10" src="/storage/{{$post->image}}" alt="First slide">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-10" src="/storage/{{$post->image2}}" alt="Second slide">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-10" src="/storage/{{$post->image3}}" alt="Third slide">
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                    @if( Auth::check() )
+                        @if(auth()->user()->role == '0')
+                            @if($like_model->like_exist(Auth::user()->id,$post->id))
+                                <p class="favorite-marke">
+                                    <a class="js-like-toggle loved" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
+                                    <span class="likesCount">{{$post->likes_count}}</span>
+                                </p>
+                            @else
+                                <p class="favorite-marke">
+                                    <a class="js-like-toggle" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
+                                    <span class="likesCount">{{$post->likes_count}}</span>
+                                </p>
+                            @endif
+                        @endif
                     @else
                         <p class="favorite-marke">
-                            <a class="js-like-toggle" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
                             <span class="likesCount">{{$post->likes_count}}</span>
                         </p>
                     @endif
-                @endif
-            @else
-                <p class="favorite-marke">
-                    <span class="likesCount">{{$post->likes_count}}</span>
-                </p>
+                </div>
             @endif
-        </div>
-    @endforeach
-@endif
-
+        @endforeach
+    @endif
+@endguest
 @endsection
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

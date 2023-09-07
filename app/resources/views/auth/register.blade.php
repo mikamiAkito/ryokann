@@ -8,7 +8,8 @@
                 <div class="card-header">{{ __('新規会員登録') }}</div>
 
                 <div class="card-body">
-                    <a class="btn btn-primary" href="{{ route('register.ryokan') }}" role="button">Link</a>
+                    <a class="btn btn-primary" href="{{ route('register.ryokan') }}" role="button">旅館運営者はこちら</a>
+                    <a class="btn btn-primary" href="{{ route('admin.index') }}" role="button">管理ユーザー</a>
                     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                         @csrf
                         <input id='role' type='hidden' class='form-control' name='role' value='0'/>

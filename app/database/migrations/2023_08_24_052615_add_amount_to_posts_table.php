@@ -15,6 +15,7 @@ class AddAmountToPostsTable extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             $table->integer('amount');
+            $table->boolean('del_flg')->default(false);
         });
     }
 

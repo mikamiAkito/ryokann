@@ -46,8 +46,8 @@
                     
                 @endif
                 @if(auth()->user()->role == '0')
-                <a href="{{ route('bookings.create',[ 'post_id' => $posts->id ]) }}">予約</a>
-                <a href="">違反報告</a>
+                    <a href="{{ route('bookings.create',[ 'post_id' => $posts->id ]) }}">予約</a>
+                    <a href="{{ route('violation.index', [ 'post_id' => $posts->id ]) }}">違反報告</a>
                 @endif
             @endif
         </div>
