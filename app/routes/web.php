@@ -16,6 +16,8 @@ use App\Http\Controllers\ViolationController;
 
 use App\Http\Controllers\AdminController;
 
+use App\Http\Controllers\SearchController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,7 @@ Route::get('/', [PostsController::class, 'index'])->name('create.posts');
 
 Route::get('/registerryokan', [RyokanregisterController::class, 'index'])->name('register.ryokan');
 
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::get('/users/{id}/', [UserController::class, 'index'])->name('users.detail');
 

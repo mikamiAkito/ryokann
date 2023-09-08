@@ -10,6 +10,35 @@
 @auth
     @if(auth()->user()->role != '2')
         @if(count($posts) > 0)
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-fluid">
+                    <form class="d-flex" role="search" method="GET" action="{{ route('search') }}">
+                    @csrf
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                        <input class="form-control me-2" type="date" placeholder="最小価格" aria-label="Search" name="minPrice">
+                        <input class="form-control me-2" type="date" placeholder="最大価格" aria-label="Search" name="maxPrice">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1" name="minAmount">
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="20000">20000</option>
+                                <option value="30000">30000</option>
+                                <option value="50000">50000</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1" name="maxAmount">
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="20000">20000</option>
+                                <option value="30000">30000</option>
+                                <option value="50000">50000</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
             @foreach($posts as $post)
                 @if($post->del_flg == '0')
                     <div class="card my-3">
@@ -77,6 +106,35 @@
 @endauth
 @guest
     @if(count($posts) > 0)
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <form class="d-flex" role="search" method="GET" action="{{ route('search') }}">
+                @csrf
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                    <input class="form-control me-2" type="date" placeholder="最小価格" aria-label="Search" name="minPrice">
+                    <input class="form-control me-2" type="date" placeholder="最大価格" aria-label="Search" name="maxPrice">
+                    <div class="form-group">
+                        <select class="form-control" id="exampleFormControlSelect1" name="minAmount">
+                            <option value="5000">5000</option>
+                            <option value="10000">10000</option>
+                            <option value="20000">20000</option>
+                            <option value="30000">30000</option>
+                            <option value="50000">50000</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="exampleFormControlSelect1" name="maxAmount">
+                            <option value="5000">5000</option>
+                            <option value="10000">10000</option>
+                            <option value="20000">20000</option>
+                            <option value="30000">30000</option>
+                            <option value="50000">50000</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
         @foreach($posts as $post)
             @if($post->del_flg == '0')
                 <div class="card my-3">
