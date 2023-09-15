@@ -8,7 +8,6 @@
                 <small>内容:{{($post->explanation)}}</small><br/>
                 <small>金額:{{($post->amount)}}円</small><br/>
                 <small>違反報告数:{{($post->violations_count)}}</small>
-                <p class="card-text">{{$post->date}}</p>
                 @if($post->image == null)
                     <img src="/storage/noimage.png">
                 @else

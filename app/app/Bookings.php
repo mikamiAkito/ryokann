@@ -6,24 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bookings extends Model
 {
+
+    protected $dates = ['date_end', 'date_strat',];
+
     protected $guarded = ['id'];
 
     // Scope
     public function scopeWhereHasBookings($query, $start, $end) {
 
-        $query->where(function($q) use($start, $end) { // 解説 - 1
+        $query->where(function($q) use($start, $end) {
 
             $q->where('date_strat', '>=', $start)
                 ->where('date_strat', '<', $end);
 
         })
-        ->orWhere(function($q) use($start, $end) { // 解説 - 2
+        ->orWhere(function($q) use($start, $end) {
 
             $q->where('date_end', '>', $start)
                 ->where('date_end', '<=', $end);
 
         })
-        ->orWhere(function($q) use ($start, $end) { // 解説 - 3
+        ->orWhere(function($q) use ($start, $end) {
 
             $q->where('date_strat', '<', $start)
                 ->where('date_end', '>', $end);

@@ -9,20 +9,19 @@
                 <small>金額:{{($booking->amount)}}円</small><br/>
                 <small>宿泊開始日:{{($booking->date_strat)}}</small><br/>
                 <small>宿泊終了日:{{($booking->date_end)}}</small>
-                <p class="card-text">{{$booking->date}}</p>
                 @if($booking->image == null)
                     <img src="/storage/noimage.png">
                 @else
                     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img class="d-block w-100" src="/storage/{{$booking->image}}" alt="First slide">
+                                <img class="d-block w-10" src="/storage/{{$booking->image}}" alt="First slide">
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block w-100" src="/storage/{{$booking->image2}}" alt="Second slide">
+                                <img class="d-block w-10" src="/storage/{{$booking->image2}}" alt="Second slide">
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block w-100" src="/storage/{{$booking->image3}}" alt="Third slide">
+                                <img class="d-block w-10" src="/storage/{{$booking->image3}}" alt="Third slide">
                             </div>
                         </div>
                         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">

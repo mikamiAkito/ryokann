@@ -28,7 +28,7 @@ class BookingsController extends Controller
         //dd($bookingall);
 
         $list = DB::table('posts')
-        ->select('posts.image', 'posts.image2', 'posts.image3', 'posts.title', 'posts.amount', 'posts.explanation', 'posts.date', 'bookings.user_id','bookings.post_id', 'bookings.number_people', 'bookings.date_strat', 'bookings.date_end', 'bookings.id')
+        ->select('posts.image', 'posts.image2', 'posts.image3', 'posts.title', 'posts.amount', 'posts.explanation', 'posts.date_strat', 'posts.date_end', 'bookings.user_id','bookings.post_id', 'bookings.number_people', 'bookings.date_strat', 'bookings.date_end', 'bookings.id')
         ->join('bookings', 'posts.id', '=', 'bookings.post_id')
         ->get();
 

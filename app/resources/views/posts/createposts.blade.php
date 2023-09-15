@@ -12,7 +12,6 @@
     </head>
     <body>
         <h1 class="text-center">投稿入力画面</h1>
-        <a href="/posts/calender" class="btn btn-primary">予約可能日確認</a>
         <form action="/posts" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3 text-center">
@@ -20,8 +19,12 @@
                 <input type="text" class="form-control ml-auto mr-auto" id="exampleFormControlInput7" name="title">
             </div>
             <div class="mb-3 text-center">
-                <label for="exampleFormControlInput1" class="form-label">予約可能日</label>
-                <input type="date" class="form-control ml-auto mr-auto" id="exampleFormControlInput6" name="date">
+                <label for="exampleFormControlInput1" class="form-label">受付開始日</label>
+                <input type="date" class="form-control ml-auto mr-auto" id="exampleFormControlInput6" name="date_strat">
+            </div>
+            <div class="mb-3 text-center">
+                <label for="exampleFormControlInput1" class="form-label">受付終了日</label>
+                <input type="date" class="form-control ml-auto mr-auto" id="exampleFormControlInput6" name="date_end">
             </div>
             <div class="mb-3 text-center">
                 <label for="exampleFormControlTextarea1" class="form-label">内容</label>

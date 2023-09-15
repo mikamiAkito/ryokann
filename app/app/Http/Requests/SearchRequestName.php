@@ -24,8 +24,7 @@ class SearchRequestName extends FormRequest
     public function rules()
     {
         return [
-            'minAmount' => 'integer',
-            'maxAmount' => 'integer',
+
         ];
     }
 }

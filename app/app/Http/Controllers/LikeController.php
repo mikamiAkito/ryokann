@@ -23,7 +23,7 @@ class LikeController extends Controller
         // dd($likeall);
 
         $list = DB::table('posts')
-        ->select('posts.image', 'posts.image2', 'posts.image3', 'posts.title', 'posts.amount', 'posts.explanation', 'posts.date', 'likes.user_id','likes.posts_id')
+        ->select('posts.image', 'posts.image2', 'posts.image3', 'posts.title', 'posts.amount', 'posts.explanation', 'posts.date_strat', 'posts.date_end', 'likes.user_id','likes.posts_id')
         ->join('likes', 'posts.id', '=', 'likes.posts_id')
         ->get();
 

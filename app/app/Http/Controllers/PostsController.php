@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Posts;
 use App\Like;
+use App\Bookings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -19,7 +21,7 @@ class PostsController extends Controller
 
         $data = [];
         $posts = new Posts;
-        $posts = Posts::withCount('likes')->orderBy('created_at', 'desc')->paginate(10);
+        $posts = Posts::withCount('likes')->orderBy('created_at', 'desc')->paginate(50);
         $like_model = new Like;
 
         $data = [
@@ -51,7 +53,8 @@ class PostsController extends Controller
         $posts = new Posts;
         $posts->user_id = $request->user()->id;
         $posts->title = $request->title;
-        $posts->date = $request->date;
+        $posts->date_strat = $request->date_strat;
+        $posts->date_end = $request->date_end;
         $posts->amount = $request->amount;
         $posts->explanation = $request->explanation;
 
@@ -75,8 +78,35 @@ class PostsController extends Controller
      */
     public function show($id)
     {
+
+        $bookings = Bookings::where('post_id', $id)->get();//投稿ごとの予約を取得
+
+        $availableDates = [];
+
+        foreach ($bookings as $booking) {
+            $startDate = Carbon::parse($booking->date_strat);
+            $endDate = Carbon::parse($booking->date_end);
+
+            while ($startDate <= $endDate) {
+                $availableDates[] = $startDate->format('Y-m-d');
+                $startDate->addDay();
+            }
+        }
+
+        $currentDate = Carbon::now();//現在の日付から30日後までの予約
+        $endDate = $currentDate->copy()->addDays(30);
+
+        $next30Days = [];
+
+        while ($currentDate <= $endDate) {
+            $next30Days[] = $currentDate->format('Y-m-d');
+            $currentDate->addDay();
+        }
+
+        $unavailableDates = array_diff($next30Days, $availableDates);        
+
         $post = Posts::find($id);
-        return view('posts.detail')->with(['posts' => $post]);
+        return view('posts.detail')->with(['posts' => $post, 'unavailableDates' => $unavailableDates]);
     }
 
     /**
@@ -99,6 +129,33 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $bookings = Bookings::where('post_id', $id)->get();//投稿ごとの予約を取得
+
+        $availableDates = [];
+
+        foreach ($bookings as $booking) {
+            $startDate = Carbon::parse($booking->date_strat);
+            $endDate = Carbon::parse($booking->date_end);
+
+            while ($startDate <= $endDate) {
+                $availableDates[] = $startDate->format('Y-m-d');
+                $startDate->addDay();
+            }
+        }
+
+        $currentDate = Carbon::now();//現在の日付から30日後までの予約
+        $endDate = $currentDate->copy()->addDays(30);
+
+        $next30Days = [];
+
+        while ($currentDate <= $endDate) {
+            $next30Days[] = $currentDate->format('Y-m-d');
+            $currentDate->addDay();
+        }
+
+        $unavailableDates = array_diff($next30Days, $availableDates);     
+
         $posts = Posts::find($id);
         $posts->title = $request->title;
         $posts->date = $request->date;
@@ -107,7 +164,7 @@ class PostsController extends Controller
         $posts->image3 = $request->image3;
         $posts->save();
 
-        return view('posts.detail')->with(['posts' => $posts]);
+        return view('posts.detail')->with(['posts' => $posts, 'unavailableDates' => $unavailableDates]);
     }
 
     /**
@@ -123,7 +180,7 @@ class PostsController extends Controller
         return redirect(route('posts.index'))->with('success', '削除しました');
     }
 
-    public function ajaxlike(Request $request)
+    public function ajaxlike(Request $request)//いいね機能
     {
         $id = Auth::user()->id;
         $posts_id = $request->posts_id;

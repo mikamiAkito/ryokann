@@ -15,6 +15,11 @@
                 @else
                     <small>管理者</small><br/>
                 @endif
+                <form action="{{ route('admin.destroy', $user->id) }}" method="post" class="float-right">
+                    @csrf
+                    @method('delete')
+                    <input type="submit" value="削除" class="btn btn-danger" onclick='return confirm("削除しますか？");'>
+                </form>
             </div>
         </div>
     @endforeach

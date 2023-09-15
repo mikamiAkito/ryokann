@@ -82,11 +82,14 @@ class AdminController extends Controller
         {
             $posts->$colum = $request->$colum;
         }
-
+        
         $posts->save();
-        dd($posts);
 
-        return view('admins.posts');
+        $posts = Posts::withCount('violations')->orderBy('violations_count', 'desc')->limit(20)->get();//違反報告数の上位20件を取得
+
+        // dd($posts);
+
+        return view('admins.posts')->with(['posts' => $posts]);
     }
 
     /**
@@ -97,7 +100,9 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
+        return view('posts.list');
     }
 
     public function users()

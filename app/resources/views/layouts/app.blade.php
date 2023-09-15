@@ -50,7 +50,7 @@
                                 </li>
                             @endif
                         @else
-                            <a class="btn btn-primary" href="users/{{ Auth::user()->id }}" role="button">マイページへ</a>
+                            <a class="btn btn-primary" href="{{ route('users.detail', Auth::user()->id) }}" role="button">マイページへ</a>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

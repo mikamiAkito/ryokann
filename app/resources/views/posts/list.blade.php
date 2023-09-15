@@ -14,11 +14,18 @@
                 <div class="container-fluid">
                     <form class="d-flex" role="search" method="GET" action="{{ route('search') }}">
                     @csrf
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
-                        <input class="form-control me-2" type="date" placeholder="最小価格" aria-label="Search" name="minPrice">
-                        <input class="form-control me-2" type="date" placeholder="最大価格" aria-label="Search" name="maxPrice">
                         <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1" name="minAmount">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control me-2" type="date" aria-label="Search" name="minPrice">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control me-2" type="date" aria-label="Search" name="maxPrice">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control me-2" id="exampleFormControlSelect1" name="minAmount">
+                                <option value=" " selected hidden>選択してください</option>
                                 <option value="5000">5000</option>
                                 <option value="10000">10000</option>
                                 <option value="20000">20000</option>
@@ -27,7 +34,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1" name="maxAmount">
+                            <select class="form-control me-2" id="exampleFormControlSelect1" name="maxAmount">
+                                <option value=" " selected hidden>選択してください</option>
                                 <option value="5000">5000</option>
                                 <option value="10000">10000</option>
                                 <option value="20000">20000</option>
@@ -49,30 +57,25 @@
                             <small>更新日:{{($post->updated_at)->format('Y/m/d')}}</small><br/>
                             <small>内容:{{($post->explanation)}}</small><br/>
                             <small>金額:{{($post->amount)}}円</small>
-                            <p class="card-text">{{$post->date}}</p>
+                            <p class="card-text">予約可能日</p>
+                            <small>:{{$post->date_strat}}</small>
+                            <small>～</small>
+                            <small>{{$post->date_end}}</small>
                             @if($post->image == null)
                                 <img src="/storage/noimage.png">
                             @else
                                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                            <img class="d-block w-100" src="/storage/{{$post->image}}" alt="First slide">
+                                            <img class="d-block w-10" src="/storage/{{$post->image}}" alt="First slide">
                                         </div>
                                         <div class="carousel-item">
-                                            <img class="d-block w-100" src="/storage/{{$post->image2}}" alt="Second slide">
+                                            <img class="d-block w-10" src="/storage/{{$post->image2}}" alt="Second slide">
                                         </div>
                                         <div class="carousel-item">
-                                            <img class="d-block w-100" src="/storage/{{$post->image3}}" alt="Third slide">
+                                            <img class="d-block w-10" src="/storage/{{$post->image3}}" alt="Third slide">
                                         </div>
                                     </div>
-                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
                                 </div>
                             @endif
                         </div>
@@ -81,18 +84,22 @@
                                 @if($like_model->like_exist(Auth::user()->id,$post->id))
                                     <p class="favorite-marke">
                                         <a class="js-like-toggle loved" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
-                                        <span class="likesCount">{{$post->likes_count}}</span>
+                                        <span class="likesCount">{{$post->likes_count}}good</span>
                                     </p>
                                 @else
                                     <p class="favorite-marke">
                                         <a class="js-like-toggle" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
-                                        <span class="likesCount">{{$post->likes_count}}</span>
+                                        <span class="likesCount">{{$post->likes_count}}good</span>
                                     </p>
                                 @endif
+                            @elseif(auth()->user()->role == '1')
+                                <p class="favorite-marke">
+                                    <span class="likesCount">{{$post->likes_count}}good</span>
+                                </p>
                             @endif
                         @else
                             <p class="favorite-marke">
-                                <span class="likesCount">{{$post->likes_count}}</span>
+                                <span class="likesCount">{{$post->likes_count}}good</span>
                             </p>
                         @endif
                     </div>
@@ -110,11 +117,18 @@
             <div class="container-fluid">
                 <form class="d-flex" role="search" method="GET" action="{{ route('search') }}">
                 @csrf
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
-                    <input class="form-control me-2" type="date" placeholder="最小価格" aria-label="Search" name="minPrice">
-                    <input class="form-control me-2" type="date" placeholder="最大価格" aria-label="Search" name="maxPrice">
                     <div class="form-group">
-                        <select class="form-control" id="exampleFormControlSelect1" name="minAmount">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control me-2" type="date" aria-label="Search" name="minPrice">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control me-2" type="date" aria-label="Search" name="maxPrice">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control me-2" id="exampleFormControlSelect1" name="minAmount">
+                            <option value=" " selected hidden>選択してください</option>
                             <option value="5000">5000</option>
                             <option value="10000">10000</option>
                             <option value="20000">20000</option>
@@ -124,6 +138,7 @@
                     </div>
                     <div class="form-group">
                         <select class="form-control" id="exampleFormControlSelect1" name="maxAmount">
+                            <option value=" " selected hidden>選択してください</option>
                             <option value="5000">5000</option>
                             <option value="10000">10000</option>
                             <option value="20000">20000</option>
@@ -145,7 +160,10 @@
                         <small>更新日:{{($post->updated_at)->format('Y/m/d')}}</small><br/>
                         <small>内容:{{($post->explanation)}}</small><br/>
                         <small>金額:{{($post->amount)}}円</small>
-                        <p class="card-text">{{$post->date}}</p>
+                        <p class="card-text">予約可能日</p>
+                        <small>:{{$post->date_strat}}</small>
+                        <small>～</small>
+                        <small>{{$post->date_end}}</small>
                         @if($post->image == null)
                             <img src="/storage/noimage.png">
                         @else
@@ -161,14 +179,6 @@
                                         <img class="d-block w-10" src="/storage/{{$post->image3}}" alt="Third slide">
                                     </div>
                                 </div>
-                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
                             </div>
                         @endif
                     </div>
@@ -177,18 +187,22 @@
                             @if($like_model->like_exist(Auth::user()->id,$post->id))
                                 <p class="favorite-marke">
                                     <a class="js-like-toggle loved" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
-                                    <span class="likesCount">{{$post->likes_count}}</span>
+                                    <span class="likesCount">{{$post->likes_count}}good</span>
                                 </p>
                             @else
                                 <p class="favorite-marke">
                                     <a class="js-like-toggle" href="" data-postid="{{ $post->id }}"><i class="fas fa-heart">いいね</i></a>
-                                    <span class="likesCount">{{$post->likes_count}}</span>
+                                    <span class="likesCount">{{$post->likes_count}}good</span>
                                 </p>
                             @endif
+                        @elseif(auth()->user()->role == '1')
+                            <p class="favorite-marke">
+                                <span class="likesCount">{{$post->likes_count}}good</span>
+                            </p>
                         @endif
                     @else
                         <p class="favorite-marke">
-                            <span class="likesCount">{{$post->likes_count}}</span>
+                            <span class="likesCount">{{$post->likes_count}}good</span>
                         </p>
                     @endif
                 </div>
@@ -231,8 +245,6 @@
             })
             // Ajaxリクエストが失敗した場合
             .fail(function (data, xhr, err) {
-    //ここの処理はエラーが出た時にエラー内容をわかるようにしておく。
-    //とりあえず下記のように記述しておけばエラー内容が詳しくわかります。笑
                 console.log('エラー');
                 console.log(err);
                 console.log(xhr);

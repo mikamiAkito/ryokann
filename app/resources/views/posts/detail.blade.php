@@ -8,7 +8,10 @@
             <small>更新日:{{($posts->updated_at)->format('Y/m/d')}}</small><br/>
             <small>内容:{{($posts->explanation)}}</small><br/>
             <small>金額:{{($posts->amount)}}円</small>
-            <p class="card-text">{{$posts->date}}</p>
+            <p class="card-text">予約可能日</p>
+            @foreach($unavailableDates as $unavailableDate)
+                <small>・{{($unavailableDate)}}</small>
+            @endforeach
             @if($posts->image == null)
                 <img src="/storage/noimage.png">
             @else
@@ -47,6 +50,8 @@
                 @endif
                 @if(auth()->user()->role == '0')
                     <a href="{{ route('bookings.create',[ 'post_id' => $posts->id ]) }}">予約</a>
+                    <a href="{{ route('violation.index', [ 'post_id' => $posts->id ]) }}">違反報告</a>
+                @elseif(auth()->user()->role == '1' && auth()->user()->id != $posts->user_id)
                     <a href="{{ route('violation.index', [ 'post_id' => $posts->id ]) }}">違反報告</a>
                 @endif
             @endif

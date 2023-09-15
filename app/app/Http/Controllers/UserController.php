@@ -6,6 +6,7 @@ use App\Http\Controllers\PostsController;
 use App\User;
 use App\Bookings;
 use Illuminate\Http\Request;
+use App\Http\Requests\UsersRequest;
 
 class UserController extends Controller
 {
@@ -70,7 +71,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UsersRequest $request, $id)
     {
         $user = User::find($id);
         $user->name = $request->name;

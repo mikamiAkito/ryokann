@@ -12,9 +12,9 @@ class ViolationController extends Controller
 {
     public function index(Request $request)
     {
-        $post_id = $request['post_id'];
+        $posts_id = $request['post_id'];
         //dd($post_id);
-        return view('violations.create')->with(['posts' => $post_id]);
+        return view('violations.create')->with(['posts_id' => $posts_id]);
     }
 
     public function create(Request $request)
@@ -22,7 +22,7 @@ class ViolationController extends Controller
         $violations = new Violation;
         $violations->reason = $request->reason;
         $violations->user_id = $request->user()->id;
-        $violations->post_id = $request->post_id;
+        $violations->posts_id = $request->posts_id;
         $violations->save();
 
         return view('violations.detail');

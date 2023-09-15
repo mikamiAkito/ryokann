@@ -13,6 +13,9 @@
                 <label for="exampleFormControlInput1">メールアドレス</label>
                 <input type="email" class="form-control" name="email" value="{{$users->email}}">
             </div>
+            @foreach ($errors->all() as $error)
+                <li style="color: red;">{{ $error }}</li>
+            @endforeach
             <!-- <div class="form-group">
                 <label for="exampleFormControlInput1">ユーザーアイコン</label>
                 <input type="file" class="form-control" name="image" value="">
