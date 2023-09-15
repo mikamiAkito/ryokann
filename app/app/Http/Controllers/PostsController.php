@@ -7,6 +7,7 @@ use App\Posts;
 use App\Like;
 use App\Bookings;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\PostsRequest;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller
@@ -48,7 +49,7 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostsRequest $request)
     {
         $posts = new Posts;
         $posts->user_id = $request->user()->id;
@@ -58,12 +59,15 @@ class PostsController extends Controller
         $posts->amount = $request->amount;
         $posts->explanation = $request->explanation;
 
-        $filePath = $request->image->store('public');
-        $posts->image = str_replace('public/', '', $filePath);
-        $filePath2 = $request->image2->store('public');
-        $posts->image2 = str_replace('public/', '', $filePath2);
-        $filePath3 = $request->image3->store('public');
-        $posts->image3 = str_replace('public/', '', $filePath3);
+        if($request->input('image'))
+        {
+            $filePath = $request->image->store('public');
+            $posts->image = str_replace('public/', '', $filePath);
+            $filePath2 = $request->image2->store('public');
+            $posts->image2 = str_replace('public/', '', $filePath2);
+            $filePath3 = $request->image3->store('public');
+            $posts->image3 = str_replace('public/', '', $filePath3);
+        }
 
         $posts->save();
 
@@ -127,7 +131,7 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostsRequest $request, $id)
     {
 
         $bookings = Bookings::where('post_id', $id)->get();//投稿ごとの予約を取得
@@ -158,7 +162,8 @@ class PostsController extends Controller
 
         $posts = Posts::find($id);
         $posts->title = $request->title;
-        $posts->date = $request->date;
+        $posts->date_strat = $request->date_strat;
+        $posts->date_end = $request->date_end;
         $posts->image = $request->image;
         $posts->image2 = $request->image2;
         $posts->image3 = $request->image3;

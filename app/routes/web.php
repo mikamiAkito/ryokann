@@ -45,7 +45,9 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::resource('posts', 'PostsController');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');//新規登録後画面
+
+Route::get('/logins', 'HomeController@logins')->name('logins');//ログイン後画面
 
 //ログイン中のユーザーのみアクセス可能
 Route::group(['middleware' => ['auth']], function () {

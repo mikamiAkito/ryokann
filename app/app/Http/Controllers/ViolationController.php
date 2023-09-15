@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ViolationRequest;
 use Illuminate\Http\Request;
 use App\Violation;
 use App\Bookings;
@@ -17,7 +18,7 @@ class ViolationController extends Controller
         return view('violations.create')->with(['posts_id' => $posts_id]);
     }
 
-    public function create(Request $request)
+    public function create(ViolationRequest $request)
     {
         $violations = new Violation;
         $violations->reason = $request->reason;
