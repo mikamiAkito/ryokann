@@ -36,57 +36,35 @@ class SearchController extends Controller
             });
         }
 
-        // // 範囲の開始日と終了日を指定
-        // $rangeStartDate = $minPrice;
-        // $rangeEndDate = $maxPrice;
-
-        // // Carbonオブジェクトに変換
-        // $rangeStartDate = Carbon::parse($rangeStartDate);
-        // $rangeEndDate = Carbon::parse($rangeEndDate);
-
-        // // 予約を取得
-        // $posts = Posts::where(function ($query) use ($rangeStartDate, $rangeEndDate) {
-        //     $query->where(function ($query) use ($rangeStartDate, $rangeEndDate) {
-        //         // 開始日が範囲内にあるかをチェック
-        //         $query->where('date_strat', '>=', $rangeStartDate)
-        //             ->where('date_strat', '<=', $rangeEndDate);
-        //     })->orWhere(function ($query) use ($rangeStartDate, $rangeEndDate) {
-        //         // 終了日が範囲内にあるかをチェック
-        //         $query->where('date_end', '>=', $rangeStartDate)
-        //             ->where('date_end', '<=', $rangeEndDate);
-        //     });
-        // })->get();
-
-
         //日付範囲検索
-        if ($minPrice !== null) {
+        if (!empty($minPrice)) {
             $query->where('date_strat', '>=', $minPrice);
         }
     
-        if ($maxPrice !== null) {
+        if (!empty($maxPrice)) {
             $query->where('date_strat', '<=', $maxPrice);
         }
 
-        if ($minPrice !== null) {
+        if (!empty($minPrice)) {
             $query->where('date_end', '>=', $minPrice);
         }
     
-        if ($maxPrice !== null) {
+        if (!empty($maxPrice)) {
             $query->where('date_end', '<=', $maxPrice);
         }
 
         //金額範囲検索
-        if ($minAmount !== null) {
+        if (!empty($minAmount)) {
             $query->where('amount', '>=', $minAmount);
         }
     
-        if ($maxAmount !== null) {
+        if (!empty($maxAmount)) {
             $query->where('amount', '<=', $maxAmount);
         }
     
         $posts = $query->get();
 
-        // dd($posts);
+        dd($posts);
         
         return view('posts.list')->with(['posts' => $posts, 'like_model' => $like_model]);
     }

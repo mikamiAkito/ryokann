@@ -14,6 +14,9 @@
         <h1 class="text-center">投稿入力画面</h1>
         <form action="/posts" method="POST" enctype="multipart/form-data">
             @csrf
+            @foreach ($errors->all() as $error)
+                <li style="color: red;">{{ $error }}</li>
+            @endforeach
             <div class="mb-3 text-center">
                 <label for="exampleFormControlInput1" class="form-label">タイトル</label>
                 <input type="text" class="form-control ml-auto mr-auto" id="exampleFormControlInput7" name="title" value="{{ old('title') }}">
@@ -40,9 +43,6 @@
                 <label for="exampleFormControlInput1" class="form-label">金額</label>
                 <input type="text" class="form-control ml-auto mr-auto" id="exampleFormControlInput4" name="amount" value="{{ old('amount') }}">
             </div>
-            @foreach ($errors->all() as $error)
-                <li style="color: red;">{{ $error }}</li>
-            @endforeach
             <div class="mb-3 text-center">
                 <input type="submit" value="投稿" class="ml-auto mr-auto btn btn-primary btn-lg"/>
             </div>

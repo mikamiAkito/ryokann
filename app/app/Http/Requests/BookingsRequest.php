@@ -25,13 +25,9 @@ class BookingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'date_strat' => [
-                new BookingsRule(
-                    $this->post_id,
-                    $this->date_strat,
-                    $this->date_end,
-                )
-            ]
+            'number_people' => 'required',
+            'date_strat' => 'required',
+            'date_end' => 'required',
         ];
     }
 

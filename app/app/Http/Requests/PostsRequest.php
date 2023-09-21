@@ -29,9 +29,6 @@ class PostsRequest extends FormRequest
             'date_end' => 'required',
             'amount' => 'required|integer',
             'explanation' => 'required',
-            'image' => 'required',
-            'image2' => 'required',
-            'image3' => 'required',
         ];
     }
 
@@ -44,9 +41,6 @@ class PostsRequest extends FormRequest
             'amount.required' => '金額は入力必須です',
             'amount.integer' => '金額は数字のみでご入力下さい',
             'explanation.required' => '内容は入力必須です',
-            'image.required' => '画像は必須入力です',
-            'image2.required' => '画像は必須入力です',
-            'image3.required' => '画像は必須入力です',
         ];
     }
 }

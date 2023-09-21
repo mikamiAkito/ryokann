@@ -12,9 +12,10 @@ class Bookings extends Model
     protected $guarded = ['id'];
 
     // Scope
-    public function scopeWhereHasBookings($query, $start, $end) {
+    public function scopeWhereHasBookings($start, $end) {
 
-        $query->where(function($q) use($start, $end) {
+        
+        $bookin = $this->where(function($q) use($start, $end) {
 
             $q->where('date_strat', '>=', $start)
                 ->where('date_strat', '<', $end);
@@ -31,8 +32,9 @@ class Bookings extends Model
             $q->where('date_strat', '<', $start)
                 ->where('date_end', '>', $end);
 
-        });
+        })->doesntExist();
 
+        return $bookin;
     }
 
     public function User() {

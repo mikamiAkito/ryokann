@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\BookingsRule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +61,10 @@ class BookingsController extends Controller
      */
     public function store(BookingsRequest $request)
     {//予約システム
-        
+
+        $customValidator = new Bookings;
+
+        if($customValidator->scopeWhereHasBookings($request->date_strat, $request->date_end) == true) {        
         \App\Bookings::create([
             'post_id' => $request->post_id,
             'number_people' => $request->number_people,
@@ -69,8 +73,10 @@ class BookingsController extends Controller
             'date_end' => $request->date_end,
         ]);
 
-
-        return back()->with('result', '予約が完了しました。');
+            return back()->with('result', '予約が完了しました。');
+        }else {
+            return back()->withErrors(['custom_validation' => '他の予約が入っています。']);
+        }
     }
 
     /**

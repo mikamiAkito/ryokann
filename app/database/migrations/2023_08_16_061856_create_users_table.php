@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name', '20')->unique();
             $table->string('email', '30')->unique();//kana削除済み
             $table->string('password', '100');
-            $table->string('image', '100')->nullable();
+            $table->string('avatar', '100')->nullable();
             $table->integer('role')->default(0);
             $table->boolean('del_flg')->default(false);
             $table->timestamps();
