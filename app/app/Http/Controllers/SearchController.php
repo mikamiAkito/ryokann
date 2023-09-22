@@ -64,7 +64,7 @@ class SearchController extends Controller
     
         $posts = $query->get();
 
-        // dd($posts);
+        dd($posts);
         
         return view('posts.list')->with(['posts' => $posts, 'like_model' => $like_model]);
     }

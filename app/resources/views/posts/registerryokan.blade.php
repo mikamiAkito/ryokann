@@ -25,18 +25,13 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group row">
-                            <label for="avatar" class="col-md-4 col-form-label text-md-right">{{ __('プロフィール画像 (サイズは1024Kbyteまで）') }}</label>
+                        <div class="form-group row">
+                            <label for="avatar" class="col-md-4 col-form-label text-md-right">{{ __('プロフィール画像') }}</label>
  
                             <div class="col-md-6">
-                                <input id="avatar" type="file" name="avatar" class="@error('avatar') is-invalid @enderror">
-                                @error('avatar')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <input id="avatar" type="file" name="avatar" class="form-control-file">
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('メールアドレス') }}</label>

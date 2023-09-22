@@ -76,7 +76,25 @@ class UserController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
+
+        // dd($request->avatar);
+
+        $avatarPath = null;
+
+        // ユーザーアイコンのアップロード処理
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
+            $avatarPath = $avatar->storeAs('avatars', $avatarName, 'public');
+        } else {
+            $avatarPath = 'default.jpg'; // デフォルトのアイコン
+        }
+
+        $user->avatar = $avatarPath;
+
         $user->save();
+
+        // dd($avatarPath);
 
         return view('users.detail');
     }
